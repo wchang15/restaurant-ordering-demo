@@ -189,7 +189,7 @@ return-page visit. Authenticated duplicate deliveries left it unchanged.
 
 ```bash
 ALLOW_REMOTE_CHECKOUT_TESTS=yes TEST_APP_URL=https://YOUR_DOMAIN.com \
-  TEST_STORE_SLUG=demo TEST_TABLE_TOKEN=demo_t1 TEST_MENU_ITEM_NAME='Demo Noodles' \
+  TEST_STORE_SLUG=hanin TEST_TABLE_TOKEN=qr_hanin_t1 TEST_MENU_ITEM_NAME='Dumplings' \
   node --env-file=.env.local scripts/test-checkout-integration.cjs
 ```
 
