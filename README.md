@@ -196,8 +196,36 @@ ALLOW_REMOTE_CHECKOUT_TESTS=yes TEST_APP_URL=https://YOUR_DOMAIN.com \
 Use Node 24 and a configured test project with a matching webhook secret. Select a
 menu item without required options. This creates one labeled synthetic order and
 one test Checkout session, then expires it; the test record remains for inspection.
-No card is charged. Paid settlement is covered by offline tests, not this expiry
-integration check. Test counts do not establish production readiness.
+No card is charged by the expiry script. Test counts do not establish production readiness.
+
+### Paid Test-Card Verification
+
+On October 6, 2026, a separate customer-browser checkout used Stripe's official
+`4242` test card: $7.99 item + $0.80 demo tax = **USD $8.79**. Checkout completed,
+the PaymentIntent succeeded, and the database recorded `payment_status=paid` with
+the same amount. Stripe Workbench showed the genuine `checkout.session.completed`
+delivery to the hosted webhook returning **200 OK**. Eight post-payment checks
+passed, including two authenticated event replays that preserved `paid_at`, total,
+and kitchen state. No live charge was made and no staff acceptance was performed.
+
+The browser did visit the return page, so this run does not independently prove
+paid settlement without that page. The no-return-path deployment check above used
+an expiry event. Concurrent paid notifications are tested offline, not under live load.
+
+To verify an already-completed synthetic test order, label its kitchen note with
+`Synthetic paid checkout verification` before checkout, then run:
+
+```bash
+ALLOW_REMOTE_CHECKOUT_TESTS=yes TEST_APP_URL=https://YOUR_DOMAIN.com \
+  TEST_ORDER_ID=YOUR_SYNTHETIC_ORDER_UUID \
+  node --env-file=.env.local scripts/verify-paid-checkout.cjs
+```
+
+This does not initiate payment. It reads the selected test order and its genuine
+completed event, then sends two signed replays to the configured endpoint. It requires
+that endpoint's signing secret and Stripe's event retention window. Inspect the
+destination delivery in Stripe Workbench separately; zero pending events alone
+does not identify which endpoint acknowledged delivery.
 
 ## Remaining production work
 - Access-control integration checks exist; full order-lifecycle and real-printer tests do not.
