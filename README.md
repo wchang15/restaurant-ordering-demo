@@ -112,7 +112,8 @@ on your phone. If your Mac IP changes, update `allowedDevOrigins` in
 
 ## Stripe Test Webhook Setup
 
-Set `NEXT_PUBLIC_APP_URL` to the deployed HTTPS origin. Checkout redirects use only
+Set server-only `CHECKOUT_APP_ORIGIN` to the deployed HTTPS origin (for example,
+`https://www.wc-qr.com`). It overrides the legacy `NEXT_PUBLIC_APP_URL`. Checkout redirects use only
 this configured value, never a browser-supplied origin. Local development can use HTTP.
 Create a **test-mode** Stripe webhook endpoint at `https://YOUR_DOMAIN/api/stripe/webhook`
 with `checkout.session.completed`, `checkout.session.async_payment_succeeded`,

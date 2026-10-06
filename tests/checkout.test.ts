@@ -112,12 +112,16 @@ test('expired Stripe signatures are rejected', () => {
 });
 test('demo refuses live keys and invalid redirect origins', () => {
   const oldKey = process.env.STRIPE_SECRET_KEY; const oldOrigin = process.env.NEXT_PUBLIC_APP_URL;
+  const oldOverride = process.env.CHECKOUT_APP_ORIGIN;
   try {
+    delete process.env.CHECKOUT_APP_ORIGIN;
     process.env.STRIPE_SECRET_KEY = 'sk_live_not_a_real_key'; assert.throws(getStripeClient);
     process.env.NEXT_PUBLIC_APP_URL = 'https://user:password@example.com'; assert.throws(checkoutOrigin);
     process.env.NEXT_PUBLIC_APP_URL = 'https://example.com'; assert.equal(checkoutOrigin(), 'https://example.com');
+    process.env.CHECKOUT_APP_ORIGIN = 'https://checkout.example.com'; assert.equal(checkoutOrigin(), 'https://checkout.example.com');
   } finally {
     if (oldKey === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = oldKey;
     if (oldOrigin === undefined) delete process.env.NEXT_PUBLIC_APP_URL; else process.env.NEXT_PUBLIC_APP_URL = oldOrigin;
+    if (oldOverride === undefined) delete process.env.CHECKOUT_APP_ORIGIN; else process.env.CHECKOUT_APP_ORIGIN = oldOverride;
   }
 });

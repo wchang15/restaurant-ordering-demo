@@ -1,19 +1,21 @@
 import Stripe from 'stripe';
 import type { CartItem } from '../types/order';
 import type { Locale } from '../types/menu';
-import { cents } from './order-pricing';
+import { cents, CheckoutError } from './order-pricing';
 
 export function getStripeClient() {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const key = process.env.STRIPE_SECRET_KEY?.trim();
   // This public demonstration must never create live charges.
-  if (!key || !/^(sk|rk)_test_/.test(key)) throw new Error('Configure a Stripe test-mode secret key.');
+  if (!key || !/^(sk|rk)_test_/.test(key)) throw new CheckoutError(503, 'Test payment credentials are not configured. Please contact the demo owner.');
   return new Stripe(key, { maxNetworkRetries: 2 });
 }
 
 export function checkoutOrigin() {
-  const url = new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
-  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.pathname !== '/' || url.search || url.hash) throw new Error('Invalid NEXT_PUBLIC_APP_URL.');
-  if (process.env.NODE_ENV === 'production' && url.protocol !== 'https:') throw new Error('Checkout requires a configured HTTPS origin.');
+  let url: URL;
+  try { url = new URL(process.env.CHECKOUT_APP_ORIGIN || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'); }
+  catch { throw new CheckoutError(503, 'Checkout redirect origin is not configured correctly.'); }
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.pathname !== '/' || url.search || url.hash) throw new CheckoutError(503, 'Checkout redirect origin is not configured correctly.');
+  if (process.env.NODE_ENV === 'production' && url.protocol !== 'https:') throw new CheckoutError(503, 'Checkout requires a configured HTTPS origin.');
   return url.origin;
 }
 
