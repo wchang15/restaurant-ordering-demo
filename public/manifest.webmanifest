@@ -1,0 +1,8 @@
+{
+  "name": "QR Ordering",
+  "short_name": "QR Ordering",
+  "display": "standalone",
+  "scope": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+}
