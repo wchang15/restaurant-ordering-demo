@@ -181,6 +181,24 @@ permissions (including untrusted user metadata), then removes that test account.
 not modify restaurant records or send emails. Use a dedicated test project where possible.
 The owner account and customer menu are separate from this temporary test identity.
 
+The hosted checkout passed **11 integration checks** on October 6, 2026:
+malformed/one-cent quotes were rejected before persistence, Stripe's test amount
+matched the server order, client names/origins were ignored, cancel navigation left
+payment pending, and an actual Stripe expiry webhook settled the order without a
+return-page visit. Authenticated duplicate deliveries left it unchanged.
+
+```bash
+ALLOW_REMOTE_CHECKOUT_TESTS=yes TEST_APP_URL=https://YOUR_DOMAIN.com \
+  TEST_STORE_SLUG=demo TEST_TABLE_TOKEN=demo_t1 TEST_MENU_ITEM_NAME='Demo Noodles' \
+  node --env-file=.env.local scripts/test-checkout-integration.cjs
+```
+
+Use Node 24 and a configured test project with a matching webhook secret. Select a
+menu item without required options. This creates one labeled synthetic order and
+one test Checkout session, then expires it; the test record remains for inspection.
+No card is charged. Paid settlement is covered by offline tests, not this expiry
+integration check. Test counts do not establish production readiness.
+
 ## Remaining production work
 - Access-control integration checks exist; full order-lifecycle and real-printer tests do not.
 - Acceptance and print dispatch are separate database operations, not a transactional outbox.
