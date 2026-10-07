@@ -4,7 +4,7 @@
 
 [Case study](https://www.woochangchang.com/restaurant-platform.html) · [Customer test demo](https://www.wc-qr.com/en/menu?store=hanin&table=qr_hanin_t1) · [Tablet companion](https://github.com/wchang15/menu)
 
-[Watch the 48-second narrated workflow](https://www.woochangchang.com/restaurant-platform.html#demo):
+[Watch the narrated workflow](https://www.woochangchang.com/restaurant-platform.html#demo):
 actual customer ordering, Stripe sandbox checkout, and authenticated staff fulfillment.
 Synthetic order #35 ($8.79) was manually accepted, marked ready, and completed.
 A CloudPRNT job was queued, but no physical printer was connected. Waiting time is
