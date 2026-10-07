@@ -158,7 +158,13 @@ and marks the dispatch sent after printing completes.
 
 ## Verification
 
-Run `node scripts/check-public-source.cjs`, `npm test`, and `npm run build`.
+Run `npm ci`, `node scripts/check-public-source.cjs`, `npm run lint`, `npm test`, and `npm run build`.
+CI runs the same checks. Lint uses the ESLint CLI with Next.js Core Web Vitals and
+TypeScript rules and fails on warnings. Next.js 16 removed `next lint`; see the
+[official configuration guide](https://nextjs.org/docs/app/api-reference/config/eslint).
+Generated `.next` and `.test-build` output is excluded; CommonJS verification
+scripts retain their intentional `require` imports. Menu dialog state resets by
+React key when the selected item changes or closes, without a resetting effect.
 Tests need no database or Stripe key. Builds need the two public Supabase variables
 (the same placeholders used by CI are sufficient to compile). The preflight scans
 selected credential patterns; it is not a comprehensive secret or security audit.
@@ -248,5 +254,7 @@ does not identify which endpoint acknowledged delivery.
 - Tax is hardcoded to 10% for MVP.
 - Menu item merging in cart is not enabled yet.
 - Production dependencies pass `npm audit --omit=dev` after the October update.
-  Tailwind 3 build-only tooling still has advisory findings; no untrusted stylesheet
-  input is supported. A Tailwind 4 migration is separate work, not silently waived.
+  The full development tree reports 9 advisory findings, including transitive
+  pattern/selector parsers used by Tailwind 3 and Next's ESLint plugin. Production
+  dependencies report zero; this is not a claim of a clean full-tree audit. No
+  untrusted stylesheet or glob input is supported. A build-tool migration is separate work.

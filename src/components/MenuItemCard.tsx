@@ -1,6 +1,7 @@
 'use client';
 
 import { Plus } from 'lucide-react';
+import Image from 'next/image';
 import { MenuItem, Locale } from '@/types/menu';
 import { pickText, t } from '@/lib/i18n';
 import { formatMoney } from '@/lib/utils';
@@ -48,7 +49,10 @@ export default function MenuItemCard({ item, locale, onOpen }: Props) {
             {hasVideo ? (
               <video src={item.videoUrl!} autoPlay muted loop playsInline className="h-full w-full object-cover" />
             ) : (
-              <img
+              <Image
+                fill
+                unoptimized
+                sizes="112px"
                 src={item.imageUrl!}
                 alt={pickText(item.name, locale)}
                 className="h-full w-full object-cover"

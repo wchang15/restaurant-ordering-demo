@@ -91,8 +91,14 @@ export async function getMenuPageData(
   if (itemsError) throw new Error(itemsError.message);
 
   const itemIds = (itemRows || []).map((row) => row.id);
-  let optionGroupRows: any[] = [];
-  let optionValueRows: any[] = [];
+  let optionGroupRows: {
+    id: string; menu_item_id: string; name_en: string; name_ko: string;
+    required: boolean; multi_select: boolean;
+  }[] = [];
+  let optionValueRows: {
+    id: string; option_group_id: string; name_en: string; name_ko: string;
+    price_delta: number | string;
+  }[] = [];
 
   if (itemIds.length) {
     const { data: groupRows, error: groupsError } = await supabase

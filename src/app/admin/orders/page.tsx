@@ -47,11 +47,9 @@ export default function AdminOrdersPage() {
   const paidOrdersToday = todayOrders.filter((order) => order.payment_status === 'paid');
   const salesToday = paidOrdersToday.reduce((sum, order) => sum + Number(order.total), 0);
 
-  const loadOrders = useCallback(async () => {
-    setIsLoading(true);
-    try {
-    const response = await adminFetch('/api/admin/orders');
-    const { orders: data } = await response.json();
+  const loadOrders = useCallback(() => adminFetch('/api/admin/orders')
+    .then((response) => response.json())
+    .then(({ orders: data }) => {
     if (data) {
       setLoadError('');
       setOrders(
@@ -62,14 +60,13 @@ export default function AdminOrdersPage() {
       setLastUpdated(new Date());
       setConnected(true);
     }
-    } catch (error) {
+    }).catch((error: unknown) => {
       setConnected(false);
       setOrders([]);
       setLoadError(error instanceof Error ? error.message : 'Orders could not be loaded.');
-    } finally {
+    }).finally(() => {
       setIsLoading(false);
-    }
-  }, []);
+    }), []);
 
   useEffect(() => {
     loadOrders();
@@ -185,7 +182,7 @@ export default function AdminOrdersPage() {
             </a>
             <button
               type="button"
-              onClick={loadOrders}
+              onClick={() => { setIsLoading(true); void loadOrders(); }}
               disabled={isLoading}
               title="Refresh orders"
               className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 hover:bg-neutral-50"
@@ -218,7 +215,7 @@ export default function AdminOrdersPage() {
         {loadError ? (
           <div className="mb-4 flex items-center justify-between border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
             <span>{loadError}</span>
-            <button type="button" onClick={loadOrders} className="font-bold underline">Try again</button>
+            <button type="button" onClick={() => { setIsLoading(true); void loadOrders(); }} className="font-bold underline">Try again</button>
           </div>
         ) : null}
 

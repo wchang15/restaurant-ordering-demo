@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import QRCode from 'qrcode';
+import Image from 'next/image';
 import { adminFetch } from '@/lib/admin-client';
 
 type TableRow = {
@@ -64,7 +65,7 @@ export default function AdminQrPage() {
             <div key={table.id} className="rounded-2xl border bg-white p-4 shadow-sm">
               <h2 className="text-lg font-semibold">{table.name}</h2>
               <p className="mt-1 break-all text-xs text-gray-500">{url}</p>
-              {images[table.id] ? <img src={images[table.id]} alt={`${table.name} QR`} className="mx-auto mt-4 h-64 w-64" /> : null}
+              {images[table.id] ? <Image src={images[table.id]} width={360} height={360} unoptimized alt={`${table.name} QR`} className="mx-auto mt-4 h-64 w-64" /> : null}
               <div className="mt-4 flex gap-2">
                 <a href={url} target="_blank" rel="noreferrer" className="rounded-xl border px-3 py-2 text-sm">Open</a>
                 <a href={images[table.id]} download={`${table.name}.png`} className="rounded-xl border px-3 py-2 text-sm">Download</a>

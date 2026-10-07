@@ -218,6 +218,7 @@ export default function MenuClientPage({
       </main>
 
       <MenuItemModal
+        key={selectedItem?.id ?? 'closed'}
         item={selectedItem}
         locale={locale}
         open={!!selectedItem}

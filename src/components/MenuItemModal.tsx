@@ -1,6 +1,7 @@
 'use client';
 
 import { Check, Minus, Plus, X } from 'lucide-react';
+import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MenuItem, Locale, MenuOptionGroup, MenuOptionValue } from '@/types/menu';
 import { pickText, t } from '@/lib/i18n';
@@ -20,13 +21,6 @@ export default function MenuItemModal({ item, locale, open, onClose }: Props) {
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState<Record<string, string[]>>({});
   const dialogRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (open && item) {
-      setQuantity(1);
-      setSelected({});
-    }
-  }, [open, item]);
 
   useEffect(() => {
     if (!open) return;
@@ -58,7 +52,7 @@ export default function MenuItemModal({ item, locale, open, onClose }: Props) {
     };
   }, [open, onClose]);
 
-  const optionGroups = item?.options ?? [];
+  const optionGroups = useMemo(() => item?.options ?? [], [item?.options]);
   const hasVideo = !!item?.videoUrl;
   const hasImage = !!item?.imageUrl;
 
@@ -140,7 +134,10 @@ export default function MenuItemModal({ item, locale, open, onClose }: Props) {
             {hasVideo ? (
               <video src={item.videoUrl!} autoPlay muted loop playsInline className="h-full w-full object-cover" />
             ) : (
-              <img
+              <Image
+                fill
+                unoptimized
+                sizes="(max-width: 512px) 100vw, 512px"
                 src={item.imageUrl!}
                 alt={pickText(item.name, locale)}
                 className="h-full w-full object-cover"

@@ -8,7 +8,7 @@
     "dev:lan": "next dev --webpack -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --max-warnings=0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.56.0",
@@ -26,6 +26,8 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "autoprefixer": "^10.4.27",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.0",
     "postcss": "^8.5.8",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.8.2"

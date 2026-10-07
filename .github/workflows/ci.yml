@@ -15,6 +15,7 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: node scripts/check-public-source.cjs
+      - run: npm run lint
       - run: npm test
       - run: npm audit --omit=dev
       - run: npm run build
