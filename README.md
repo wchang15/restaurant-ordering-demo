@@ -254,7 +254,8 @@ does not identify which endpoint acknowledged delivery.
 - Tax is hardcoded to 10% for MVP.
 - Menu item merging in cart is not enabled yet.
 - Production dependencies pass `npm audit --omit=dev` after the October update.
-  The full development tree reports 9 advisory findings, including transitive
-  pattern/selector parsers used by Tailwind 3 and Next's ESLint plugin. Production
-  dependencies report zero; this is not a claim of a clean full-tree audit. No
-  untrusted stylesheet or glob input is supported. A build-tool migration is separate work.
+  The selector-parser advisory is patched via version 7.1.6. Seven development-only
+  findings remain, all from the unpatched `braces` advisory through Tailwind/Next lint
+  tooling. This is not a clean full-tree audit. `npm run audit:dependencies` checks
+  the full tree, fails on new/runtime findings and expires the narrowly reviewed
+  exception on November 6, 2026. See [dependency review and exposure](SECURITY.md).

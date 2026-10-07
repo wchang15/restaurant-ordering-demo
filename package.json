@@ -8,7 +8,8 @@
     "dev:lan": "next dev --webpack -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --max-warnings=0"
+    "lint": "eslint . --max-warnings=0",
+    "audit:dependencies": "node scripts/audit-dependencies.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.56.0",
@@ -19,6 +20,9 @@
     "react-dom": "19.0.0",
     "stripe": "^23.0.0",
     "zustand": "^5.0.8"
+  },
+  "overrides": {
+    "postcss-selector-parser": "7.1.6"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
