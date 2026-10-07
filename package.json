@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
-    "audit:dependencies": "node scripts/audit-dependencies.cjs"
+    "audit:dependencies": "node scripts/audit-dependencies.cjs",
+    "test:audit-policy": "node --test scripts/audit-dependencies.test.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.56.0",

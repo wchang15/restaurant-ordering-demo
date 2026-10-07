@@ -17,6 +17,7 @@ jobs:
       - run: node scripts/check-public-source.cjs
       - run: npm run lint
       - run: npm test
+      - run: npm run test:audit-policy
       - run: npm audit --omit=dev
       - run: npm run audit:dependencies
       - run: npm run build

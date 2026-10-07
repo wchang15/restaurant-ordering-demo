@@ -43,5 +43,10 @@ is restricted to this advisory, including transitive parents, and prints the raw
 remaining counts. Reassess when upstream publishes a fix; remove the exception
 after upgrading. `npm audit` intentionally still reports the outstanding issue.
 
+`npm run test:audit-policy` covers the exception with 14 offline regression tests:
+new/mixed advisories, runtime dependencies, missing packages, dependency cycles,
+expiry, malformed reports and audit-process failure all fail closed. These tests
+verify the policy gate, not the absence of vulnerabilities in the application.
+
 Report a suspected vulnerability privately to woochangchang@gmail.com. Do not post
 secrets, customer data, or working live-system exploits in public issues.
